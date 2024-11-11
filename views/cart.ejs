@@ -1,53 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shopping Cart</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-  <div class="container mt-5">
-    <h1 class="mb-4">Your Cart</h1>
-
-    <% if (cartItems.length === 0) { %>
-      <p>Your cart is empty.</p>
-    <% } else { %>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Product</th>
-            <th scope="col">Price</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Total</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% cartItems.forEach(product => { %>
-            <tr>
-              <td><%= product.name %></td>
-              <td>$<%= product.price %></td>
-              <td>
-                <form action="/cart/update/<%= product.id %>" method="POST" class="d-inline">
-                  <input type="number" name="quantity" value="<%= cartItems.quantity %>" min="1" class="form-control d-inline" style="width: 60px;">
-                  <button type="submit" class="btn btn-secondary btn-sm">Update</button>
-                </form>
-              </td>
-              <td>$<%= (cartItems.price * cartItems.quantity).toFixed(2) %></td>
-              <td>
-                <form action="/cart/remove/<%= product.id %>" method="POST">
-                  <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                </form>
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-
-      <h3>Total: $<%= totalPrice.toFixed(2) %></h3>
-      <a href="/checkout" class="btn btn-primary">Proceed to Checkout</a>
-    <% } %>
-  </div>
+    <div class="container">
+        <h1>Your Cart</h1>
+        <% if (Object.keys(cart).length === 0) { %>
+            <p>Your cart is empty.</p>
+        <% } else { %>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let productId in cart) { %>
+                        <tr>
+                            <td><%= cart[productId].name %></td>
+                            <td>
+                                <form action="/cart/update/<%= productId %>" method="POST">
+                                    <input type="number" name="quantity" value="<%= cart[productId].quantity %>" min="1">
+                                    <button type="submit" class="btn btn-info">Update</button>
+                                </form>
+                            </td>
+                            <td><%= cart[productId].price * cart[productId].quantity %></td>
+                            <td>
+                                <form action="/cart/remove/<%= productId %>" method="POST">
+                                    <button type="submit" class="btn btn-danger">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <h3>Total: <%= total %></h3>
+        <% } %>
+        <a href="/" class="btn btn-primary">Continue Shopping</a>
+    </div>
 </body>
 </html>
