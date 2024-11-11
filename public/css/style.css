@@ -1,0 +1,19 @@
+/* public/css/styles.css */
+
+.card {
+    border: none;
+    transition: transform 0.2s;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card-title {
+    font-weight: bold;
+  }
+  
+  .navbar {
+    margin-bottom: 20px;
+  }
+  

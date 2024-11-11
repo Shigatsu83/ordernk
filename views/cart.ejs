@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="mb-4">Your Cart</h1>
+
+    <% if (cartItems.length === 0) { %>
+      <p>Your cart is empty.</p>
+    <% } else { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% cartItems.forEach(product => { %>
+            <tr>
+              <td><%= product.name %></td>
+              <td>$<%= product.price %></td>
+              <td>
+                <form action="/cart/update/<%= product.id %>" method="POST" class="d-inline">
+                  <input type="number" name="quantity" value="<%= cartItems.quantity %>" min="1" class="form-control d-inline" style="width: 60px;">
+                  <button type="submit" class="btn btn-secondary btn-sm">Update</button>
+                </form>
+              </td>
+              <td>$<%= (cartItems.price * cartItems.quantity).toFixed(2) %></td>
+              <td>
+                <form action="/cart/remove/<%= product.id %>" method="POST">
+                  <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+      <h3>Total: $<%= totalPrice.toFixed(2) %></h3>
+      <a href="/checkout" class="btn btn-primary">Proceed to Checkout</a>
+    <% } %>
+  </div>
+</body>
+</html>
