@@ -6,6 +6,7 @@ const cartRoutes = require('./routes/cart');
 const mongoose = require('mongoose');
 const Product = require('./models/Product');
 const authMiddleware = require('./middlewares/auth');
+const orderRoutes = require('./routes/order');
 
 const app = express();
 // Middleware to parse URL-encoded form data
@@ -40,6 +41,7 @@ app.use(session({
 }));
 app.use(authRoutes);
 app.use(cartRoutes);
+app.use(orderRoutes);
 
 //Login 
 app.get('/login', (req, res) => res.render('login'));
@@ -69,7 +71,7 @@ app.get('/',authMiddleware, async (req, res) => {
               itemCount += req.session.cart[productId].quantity;
           }
       }
-      res.render('index', { title: 'Nasi Kepal Nusantara', products, username, itemCount});
+      res.render('index', { title: 'Jastip', products, username, itemCount});
     }catch(error) {
       console.error('Error fetch the product', error);
       res.status(500).send("Error Fetching products")
