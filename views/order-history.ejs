@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Minimal, centered container */
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Simple card style for each order */
+        .order-card {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h4, p, h5 {
+            margin: 0.5rem 0;
+        }
+
+        /* Item list styling */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+
+        ul li {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        /* Button styling */
+        .btn {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin: 2rem auto;
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Order History</h1>
+        <% if (orders.length === 0) { %>
+            <p class="text-center">No orders found.</p>
+        <% } else { %>
+            <% orders.forEach(order => { %>
+                <div class="order-card">
+                    <h4>Order Date: <%= order.createdAt.toDateString() %></h4>
+                    <p><strong>Total Amount:</strong> Rp <%= order.totalAmount %></p>
+                    <p><strong>Payment Method:</strong> <%= order.paymentMethod %></p>
+                    <h5>Items:</h5>
+                    <ul>
+                        <% order.items.forEach(item => { %>
+                            <li><%= item.name %> - Quantity: <%= item.quantity %> - Rp <%= item.price %></li>
+                        <% }) %>
+                    </ul>
+                </div>
+            <% }) %>
+        <% } %>
+        <a href="/" class="btn btn-primary">Continue Shopping</a>
+    </div>
+</body>
+</html>
