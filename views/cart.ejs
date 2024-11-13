@@ -4,46 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cart</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f7fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 40px;
+            max-width: 800px;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            background-color: #fff;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .table img {
+            width: 50px;
+            height: auto;
+            border-radius: 5px;
+        }
+        .btn-update, .btn-remove {
+            font-size: 0.9rem;
+        }
+        .total-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .checkout-btn {
+            font-size: 1.2rem;
+            font-weight: bold;
+            width: 100%;
+            padding: 12px;
+        }
+        .continue-shopping {
+            text-decoration: none;
+            font-size: 0.95rem;
+            color: #007bff;
+        }
+        .continue-shopping:hover {
+            color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Your Cart</h1>
-        <% if (Object.keys(cart).length === 0) { %>
-            <p>Your cart is empty.</p>
-        <% } else { %>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (let productId in cart) { %>
+        <div class="card">
+            <h1 class="mb-4 text-center">Your Cart</h1>
+            <% if (Object.keys(cart).length === 0) { %>
+                <p class="text-center text-muted">Your cart is empty.</p>
+            <% } else { %>
+                <table class="table table-borderless">
+                    <thead class="table-light">
                         <tr>
-                            <td><%= cart[productId].name %></td>
-                            <td>
-                                <form action="/cart/update/<%= productId %>" method="POST">
-                                    <input type="number" name="quantity" value="<%= cart[productId].quantity %>" min="1">
-                                    <button type="submit" class="btn btn-info">Update</button>
-                                </form>
-                            </td>
-                            <td><%= cart[productId].price * cart[productId].quantity %></td>
-                            <td>
-                                <form action="/cart/remove/<%= productId %>" method="POST">
-                                    <button type="submit" class="btn btn-danger">Remove</button>
-                                </form>
-                            </td>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Action</th>
                         </tr>
-                    <% } %>
-                </tbody>
-            </table>
-            <h3>Total: <%= total %></h3>
+                    </thead>
+                    <tbody>
+                        <% for (let productId in cart) { %>
+                            <tr>
+                                <td>
+                                    <img src="<%= cart[productId].image %>" alt="<%= cart[productId].name %>" class="me-2">
+                                    <span><%= cart[productId].name %></span>
+                                </td>
+                                <td>
+                                    <form action="/cart/update/<%= productId %>" method="POST" class="d-flex align-items-center">
+                                        <input type="number" name="quantity" value="<%= cart[productId].quantity %>" min="1" class="form-control form-control-sm me-2" style="width: 70px;">
+                                        <button type="submit" class="btn btn-outline-primary btn-update">Update</button>
+                                    </form>
+                                </td>
+                                <td>Rp <%= cart[productId].price * cart[productId].quantity %></td>
+                                <td>
+                                    <form action="/cart/remove/<%= productId %>" method="POST">
+                                        <button type="submit" class="btn btn-outline-danger btn-remove">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } %>
+            <div class="text-center mt-4">
+                <a href="/" class="continue-shopping">Continue Shopping</a>
+            </div>
+        </div>
+
+        <% if (Object.keys(cart).length > 0) { %>
+            <div class="total-section mt-4 text-center">
+                <h3 class="total-price">Total: Rp <%= total %></h3>
+            </div>
+
+            <!-- Checkout section -->
+            <div class="checkout-section mt-4">
+                <h4>Payment Method</h4>
+                <form action="/checkout" method="POST">
+                    <div class="form-check">
+                        <input type="radio" id="cod" name="paymentMethod" value="COD" class="form-check-input" checked>
+                        <label for="cod" class="form-check-label">Cash on Delivery (COD)</label>
+                    </div>
+                    <button type="submit" class="btn btn-success checkout-btn mt-3">Place Order</button>
+                </form>
+            </div>
         <% } %>
-        <a href="/" class="btn btn-primary">Continue Shopping</a>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
